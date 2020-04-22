@@ -42,7 +42,7 @@ $list = $wpdb->get_results("SELECT * FROM $ews_table ORDER BY update_time DESC l
             }
         }
         else{
-            echo '<tr><td colspan="4" align="center"><strong>暂无订单</strong></td></tr>';
+            echo '<tr><td colspan="4" align="center"><strong>暂无记录</strong></td></tr>';
         }
     ?>
     </tbody>
