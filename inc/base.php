@@ -51,29 +51,63 @@ function ews_login($code){
     date_default_timezone_set('Asia/Shanghai');
     global $wpdb, $ews_table;
     if($code){
-        $openid = $wpdb->get_var("select openid from $ews_table where scene_id='".esc_sql($code)."' and update_time >= SUBDATE(NOW(), INTERVAL 5 MINUTE)");
-        if($openid){
-            $user_ID = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE weixinid='".$openid."'");
-            if($user_ID){
-                $user_login = get_user_by('id',$user_ID)->user_login;
-                wp_set_auth_cookie($user_ID,true,is_ssl());
-                wp_signon( array(), is_ssl() );
-                do_action('wp_login', $user_login);
-                return true;
-            }else{
-                $login_name = "u".mt_rand(1000,9999).mt_rand(1000,9999).mt_rand(1000,9999).mt_rand(1000,9999);
-                $userdata=array(
-                  'user_login' => $login_name,
-                  'user_pass' => $code
-                );
-                $user_ID = wp_insert_user( $userdata );
-                if ( !is_wp_error( $user_ID ) ) {
-                    $ff = $wpdb->query("UPDATE $wpdb->users SET weixinid = '".$openid."' WHERE ID = '$user_ID'");
-                    if($ff){
+        $result = $wpdb->get_row("select openid, nickname, avatar from $ews_table where scene_id='".esc_sql($code)."' and update_time >= SUBDATE(NOW(), INTERVAL 5 MINUTE)");
+        if($result){
+            $openid = $result->openid;
+            $nickname = $result->nickname;
+            $avatar = $result->avatar;
+            if($openid){
+                $user_ID = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE weixinid='".$openid."'");
+                if($user_ID){
+                    $user = get_user_by('id',$user_ID);
+                    if($user){
+                        $user_login = $user->user_login;
                         wp_set_auth_cookie($user_ID,true,is_ssl());
                         wp_signon( array(), is_ssl() );
-                        do_action('wp_login', $login_name);
+                        do_action('wp_login', $user_login);
                         return true;
+                    }else{
+                        $login_name = "u".mt_rand(1000,9999).mt_rand(1000,9999).mt_rand(1000,9999).mt_rand(1000,9999);
+                        $userdata=array(
+                          'user_login' => $login_name,
+                          'display_name' => $nickname?$nickname:$login_name,
+                          'nickname' => $nickname?$nickname:$login_name,
+                          'user_pass' => $code
+                        );
+                        $user_ID = wp_insert_user( $userdata );
+                        if ( !is_wp_error( $user_ID ) ) {
+                            $ff = $wpdb->query("UPDATE $wpdb->users SET weixinid = '".$openid."' WHERE ID = '$user_ID'");
+                            if($ff){
+                                if($avatar){
+                                    add_user_meta($user_ID,'photo',$avatar);
+                                }
+                                wp_set_auth_cookie($user_ID,true,is_ssl());
+                                wp_signon( array(), is_ssl() );
+                                do_action('wp_login', $login_name);
+                                return true;
+                            }
+                        }
+                    }
+                }else{
+                    $login_name = "u".mt_rand(1000,9999).mt_rand(1000,9999).mt_rand(1000,9999).mt_rand(1000,9999);
+                    $userdata=array(
+                      'user_login' => $login_name,
+                      'display_name' => $nickname?$nickname:$login_name,
+                      'nickname' => $nickname?$nickname:$login_name,
+                      'user_pass' => $code
+                    );
+                    $user_ID = wp_insert_user( $userdata );
+                    if ( !is_wp_error( $user_ID ) ) {
+                        $ff = $wpdb->query("UPDATE $wpdb->users SET weixinid = '".$openid."' WHERE ID = '$user_ID'");
+                        if($ff){
+                            if($avatar){
+                                add_user_meta($user_ID,'photo',$avatar);
+                            }
+                            wp_set_auth_cookie($user_ID,true,is_ssl());
+                            wp_signon( array(), is_ssl() );
+                            do_action('wp_login', $login_name);
+                            return true;
+                        }
                     }
                 }
             }
