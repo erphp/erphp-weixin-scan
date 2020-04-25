@@ -139,6 +139,7 @@ function ews_shortcode($atts, $content){
     $ews_qrcode = get_option("ews_qrcode");
     $html = '<style>
         .erphp-weixin-scan{margin:0 auto;position:relative;max-width: 300px;}
+        .erphp-weixin-scan .ews-title{text-align:center;font-size:18px;}
         .erphp-weixin-scan img{max-width: 100%;height: auto;}
         .erphp-weixin-scan .ews-box{text-align: center;}
         .erphp-weixin-scan .ews-box .ews-input{border:1px solid #eee;border-radius:3px;padding:6px 12px;width:150px;height: 35px;box-sizing: border-box;}
@@ -146,6 +147,7 @@ function ews_shortcode($atts, $content){
         .erphp-weixin-scan .ews-tips{text-align:center;font-size:13px;color:#999;margin-top:10px;}
         </style>
         <div class="erphp-weixin-scan">
+            <div class="ews-title">微信扫一扫关注</div>
             <img src="'.$ews_qrcode.'" />
             <div class="ews-box">
                 <input type="text" id="ews_code" class="ews-input" placeholder="验证码"/>
