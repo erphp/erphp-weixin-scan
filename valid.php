@@ -27,7 +27,7 @@ class erphpWeixinScan {
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         //$scene_id = str_replace("qrscene_", "", $postObj->EventKey);
 
-        $openid = $postObj->FromUserName;
+        $openid = esc_sql($postObj->FromUserName);
         $ToUserName = $postObj->ToUserName;
         
         $msgType = $postObj->MsgType;
@@ -48,7 +48,7 @@ class erphpWeixinScan {
                 }
 
                 if($result){
-                    $content = "验证码：".$code."，5分钟有效～";
+                    $content = "验证码：".$code."，5分钟内有效，过期后请重新发送“登录”二字获取～";
                 }else{
                     $content = "公众号开了小差，请稍后重试～";
                 }
@@ -74,7 +74,7 @@ class erphpWeixinScan {
                 }
 
                 if($result){
-                    $content = "验证码：".$code."，5分钟有效～";
+                    $content = "验证码：".$code."，5分钟内有效，过期后请重新发送“登录”二字获取～";
                 }else{
                     $content = "公众号开了小差，请稍后重试～";
                 }
