@@ -116,6 +116,30 @@ function ews_login($code){
     return false;
 }
 
+function ews_bind($code){
+    if(is_user_logged_in()){
+        date_default_timezone_set('Asia/Shanghai');
+        global $wpdb, $ews_table, $current_user;
+        $userid = $current_user->ID;
+        if($code){
+            $result = $wpdb->get_row("select openid from $ews_table where scene_id='".esc_sql($code)."' and update_time >= SUBDATE(NOW(), INTERVAL 5 MINUTE)");
+            if($result){
+                $openid = $result->openid;
+                if($openid){
+                    $user_ID = $wpdb->get_var("SELECT ID FROM $wpdb->users WHERE weixinid='".$openid."'");
+                    if($user_ID){
+                        return '2';
+                    }else{
+                        $wpdb->query("UPDATE $wpdb->users SET weixinid = '".$openid."' WHERE ID = $userid");
+                        return '1';
+                    }
+                }
+            }
+        }
+    }
+    return '0';
+}
+
 function ews_login_callback(){
     $code = $_POST['code'];
     $status = 0;
@@ -132,6 +156,45 @@ function ews_login_callback(){
     exit;
 }
 add_action( 'wp_ajax_nopriv_ews_login', 'ews_login_callback');
+
+function ews_bind_callback(){
+    $code = $_POST['code'];
+    $status = ews_bind($code);
+
+    $result = array(
+        'status' => $status
+    );
+
+    header('Content-type: application/json');
+    echo json_encode($result);
+    exit;
+}
+add_action( 'wp_ajax_ews_bind', 'ews_bind_callback');
+
+add_shortcode('erphp_weixin_scan_bind','ews_bind_shortcode');
+function ews_bind_shortcode($atts, $content){
+    $ews_qrcode = get_option("ews_qrcode");
+    $html = '<style>
+        .erphp-weixin-scan{margin:0 auto;position:relative;max-width: 250px;}
+        .erphp-weixin-scan .ews-title{text-align:center;font-size:18px;}
+        .erphp-weixin-scan img{max-width: 100%;height: auto;}
+        .erphp-weixin-scan .ews-box{text-align: center;}
+        .erphp-weixin-scan .ews-box .ews-input{border:1px solid #eee;border-radius:3px;padding:6px 12px;width:120px;height: 35px;box-sizing: border-box;}
+        .erphp-weixin-scan .ews-box .ews-bind-button{background: #07C160;border:none;padding:7px 12px;color:#fff;border-radius: 3px;font-size:14px;cursor: pointer;height: 35px;box-sizing: border-box;}
+        .erphp-weixin-scan .ews-tips{text-align:center;font-size:13px;color:#999;margin-top:10px;}
+        </style>
+        <div class="erphp-weixin-scan">
+            <img src="'.$ews_qrcode.'" />
+            <div class="ews-box">
+                <input type="text" id="ews_code" class="ews-input" placeholder="验证码"/>
+                <button type="button" class="ews-bind-button">验证绑定</button>
+            </div>
+            <div class="ews-tips">
+            如已关注，请回复“绑定”二字获取验证码
+            </div>
+        </div>';
+    return $html;
+}
 
 add_shortcode('erphp_weixin_scan','ews_shortcode');
 function ews_shortcode($atts, $content){
