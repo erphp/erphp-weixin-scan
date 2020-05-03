@@ -175,9 +175,9 @@ add_shortcode('erphp_weixin_scan_bind','ews_bind_shortcode');
 function ews_bind_shortcode($atts, $content){
     $ews_qrcode = get_option("ews_qrcode");
     $html = '<style>
-        .erphp-weixin-scan{margin:0 auto;position:relative;max-width: 250px;}
+        .erphp-weixin-scan{margin:0 auto;position:relative;max-width: 250px;text-align:center;}
         .erphp-weixin-scan .ews-title{text-align:center;font-size:18px;}
-        .erphp-weixin-scan img{max-width: 100%;height: auto;}
+        .erphp-weixin-scan img{max-width: 100%;height: auto;margin:5px 0}
         .erphp-weixin-scan .ews-box{text-align: center;}
         .erphp-weixin-scan .ews-box .ews-input{border:1px solid #eee;border-radius:3px;padding:6px 12px;width:120px;height: 35px;box-sizing: border-box;}
         .erphp-weixin-scan .ews-box .ews-bind-button{background: #07C160;border:none;padding:7px 12px;color:#fff;border-radius: 3px;font-size:14px;cursor: pointer;height: 35px;box-sizing: border-box;}
