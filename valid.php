@@ -34,7 +34,7 @@ class erphpWeixinScan {
         $Event = strtolower($postObj->Event);
 
         if($msgType == 'text'){
-            if($postObj->Content == '登录' || $postObj->Content == '绑定'){
+            if($postObj->Content == '登录' || $postObj->Content == '登陆' || $postObj->Content == '绑定'){
 
                 $exist = $wpdb->get_var("select id from $ews_table where openid='".$openid."'");
                 if($exist){
