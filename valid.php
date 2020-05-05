@@ -54,7 +54,7 @@ class erphpWeixinScan {
                 }
 
             }else{
-                $content = "我太笨，有点不明白您的意思～";  
+                $content = get_option("ews_reply")?get_option("ews_reply"):"我太笨，有点不明白您的意思～";
             }
 
             $str = $this->sendtext($openid, $ToUserName, $content);
