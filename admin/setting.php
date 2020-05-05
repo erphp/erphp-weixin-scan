@@ -5,13 +5,14 @@ if(isset($_POST['erphp_weixin_scan'])){
     update_option('ews_appid', trim($_POST['ews_appid']));
     update_option('ews_appsecret', trim($_POST['ews_appsecret']));
     update_option('ews_qrcode', trim($_POST['ews_qrcode']));
+    update_option('ews_reply', trim($_POST['ews_reply']));
     echo'<div class="updated settings-error"><p>更新成功！</p></div>';
 }
 $ews_token = get_option("ews_token");
 $ews_appid = get_option("ews_appid");
 $ews_appsecret = get_option("ews_appsecret");
 $ews_qrcode = get_option("ews_qrcode");
-
+$ews_reply = get_option("ews_reply");
 wp_enqueue_media ();
 ?>
 
@@ -54,6 +55,12 @@ wp_enqueue_media ();
                 <th valign="top">公众号二维码</th>
                 <td>
                     <input type="text" id="ews_qrcode" name="ews_qrcode" value="<?php echo $ews_qrcode;?>" class="regular-text" required=""/> <button class="set_ews_qrcode button" type="button">上传二维码</button>
+                </td>
+            </tr>
+            <tr>
+                <th valign="top">自动回复内容</th>
+                <td>
+                    <input type="text" id="ews_reply" name="ews_reply" value="<?php echo $ews_reply;?>" class="regular-text" required=""/> 
                 </td>
             </tr>
             <tr>
