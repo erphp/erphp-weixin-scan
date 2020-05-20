@@ -5,10 +5,10 @@ Plugin URI: http://www.mobantu.com/8259.html
 Author: 模板兔
 Author URI: http://www.mobantu.com
 Description: WordPress关注公众号登录，支持未认证的订阅号～
-Version: 1.0
+Version: 1.1
 */
 
-define('EWS_VERSION', '1.0');
+define('EWS_VERSION', '1.1');
 define('EWS_URL', plugins_url('', __FILE__));
 define('EWS_PATH', dirname( __FILE__ ));
 define('EWS_ADMIN_URL', admin_url());
