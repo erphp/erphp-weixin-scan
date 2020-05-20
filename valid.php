@@ -55,6 +55,18 @@ class erphpWeixinScan {
 
             }else{
                 $content = get_option("ews_reply")?get_option("ews_reply"):"我太笨，有点不明白您的意思～";
+                $ews_reply_auto = get_option("ews_reply_auto");
+                if($ews_reply_auto){
+                    $cnt = count($ews_reply_auto['key']); 
+                    if($cnt){
+                        for($i=0; $i<$cnt;$i++){
+                            if(strtolower($postObj->Content) == strtolower($ews_reply_auto['key'][$i])){
+                                $content = $ews_reply_auto['value'][$i];
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
             $str = $this->sendtext($openid, $ToUserName, $content);
