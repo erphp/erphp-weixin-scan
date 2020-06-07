@@ -9,12 +9,30 @@ if(isset($_POST['erphp_weixin_scan'])){
     update_option('ews_reply_auto', $_POST['ews_reply_auto']);
     echo'<div class="updated settings-error"><p>更新成功！</p></div>';
 }
+if(isset($_POST['erphp_weixin_scan_menu'])){
+    update_option('ews_menu', str_replace('\"', '"', get_option("ews_menu")));
+    global $ews_weixin_appid, $ews_weixin_appsecret;
+    $TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$ews_weixin_appid."&secret=".$ews_weixin_appsecret;
+    $json=file_get_contents($TOKEN_URL);
+    $result=json_decode($json);
+    $ACC_TOKEN=$result->access_token;
+    $data = str_replace('\"', '"', get_option("ews_menu"));
+    $MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$ACC_TOKEN;
+    $info = ews_http_post($MENU_URL,$data);
+    $menu = json_decode($info);
+    if($menu->errcode == "0"){
+        echo'<div class="updated settings-error"><p>菜单更新成功！</p></div>';
+    }else{
+        echo'<div class="updated settings-error"><p>菜单更新失败，请稍后重试！</p></div>';
+    }
+}
 $ews_token = get_option("ews_token");
 $ews_appid = get_option("ews_appid");
 $ews_appsecret = get_option("ews_appsecret");
 $ews_qrcode = get_option("ews_qrcode");
 $ews_reply = get_option("ews_reply");
 $ews_reply_auto = get_option("ews_reply_auto");
+$ews_menu = get_option("ews_menu");
 wp_enqueue_media ();
 ?>
 
@@ -82,6 +100,7 @@ wp_enqueue_media ();
                     <p class="description">基于用户发送的关键字精准回复的信息，关键字不要设置“登录”、“登陆”、“绑定”。</p>
                 </td>
             </tr>
+            
             <tr>
                 <th valign="top">使用方法</th>
                 <td>
@@ -92,6 +111,21 @@ wp_enqueue_media ();
         <p class="submit">
             <input type="submit" name="erphp_weixin_scan" value="保存设置" class="button-primary"/>
         </p>  
+    </form>
+    <form method="post" action="<?php echo admin_url('admin.php?page=ews_setting_page');?>">
+        <table class="form-table">
+            <tr>
+                <th valign="top">公众号菜单(Json数据)</th>
+                <td>
+                    <textarea id="ews_menu" name="ews_menu" class="regular-text" rows="20"><?php echo $ews_menu;?></textarea>
+                    <p class="description">设置菜单选项请移步 <a href="https://wei.jiept.com" target="_blank" rel="nofollow">https://wei.jiept.com</a> 设置方法请看 <a href="<?php echo EWS_URL;?>/assets/menu.jpg" target="blank">设置方法</a></p>
+                </td>
+            </tr>
+        </table>
+        <p class="submit">
+            <input type="submit" name="erphp_weixin_scan_menu" value="更新菜单" class="button-primary"/>
+            <p class="description"><span style="color:red">微信官方限制：未认证的订阅号由于权限不足没法通过此处设置菜单。</span>更新菜单前请先保存设置的AppId与AppSecret，更新一般需要等5分站左右才会生效。</p>
+        </p> 
     </form>
 </div>
 <script>
