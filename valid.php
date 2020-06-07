@@ -32,6 +32,7 @@ class erphpWeixinScan {
         
         $msgType = $postObj->MsgType;
         $Event = strtolower($postObj->Event);
+        $EventKey = strtolower($postObj->EventKey);
 
         if($msgType == 'text'){
             if($postObj->Content == '登录' || $postObj->Content == '登陆' || $postObj->Content == '绑定'){
@@ -72,7 +73,7 @@ class erphpWeixinScan {
             $str = $this->sendtext($openid, $ToUserName, $content);
             echo $str;
         }else{
-            if($Event == 'subscribe' || $Event == 'scan'){
+            if($Event == 'subscribe' || $Event == 'scan' || ($Event == 'click' && $EventKey == 'ews_login')){
 
                 $exist = $wpdb->get_var("select id from $ews_table where openid='".$openid."'");
                 if($exist){
@@ -93,7 +94,6 @@ class erphpWeixinScan {
 
                 $str = $this->sendtext($openid, $ToUserName, $content);
                 echo $str; 
-                
             }
         }        
         
