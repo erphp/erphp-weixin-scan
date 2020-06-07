@@ -278,3 +278,17 @@ function ews_pagination($total_count, $number_per_page=15){
     </div>
     <?php
 }
+
+function ews_http_post($url, $data) {  
+    $ch = curl_init();  
+    curl_setopt($ch, CURLOPT_URL,$url);  
+    curl_setopt($ch, CURLOPT_HEADER,0);  
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
+    curl_setopt($ch, CURLOPT_POST, 1);  
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  //不验证 SSL 证书
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); //不验证 SSL 证书域名
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);  
+    $res = curl_exec($ch);  
+    curl_close($ch);  
+    return $res;  
+}
