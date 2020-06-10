@@ -45,7 +45,7 @@ class erphpWeixinScan {
                     $access_token = $this->getAccessToken();
                     $userinfo = $this->getUserinfo($openid, $access_token);
                     $code = rand(10000000,99999999);
-                    $result = $wpdb->query("insert into $ews_table (scene_id,openid,unionid,access_token,nickname,avatar,create_time,update_time) values('".$code."','".$openid."','".$userinfo['unionid']."','".$access_token."','".$userinfo['nickname']."','".$userinfo['headimgurl']."','".date("Y-m-d H:i:s")."','".date("Y-m-d H:i:s")."')");
+                    $result = $wpdb->query("insert into $ews_table (scene_id,openid,unionid,access_token,nickname,avatar,create_time,update_time) values('".$code."','".$openid."','".$userinfo['unionid']."','".$access_token."','".ews_filter_nickname($userinfo['nickname'])."','".$userinfo['headimgurl']."','".date("Y-m-d H:i:s")."','".date("Y-m-d H:i:s")."')");
                 }
 
                 if($result){
@@ -83,7 +83,7 @@ class erphpWeixinScan {
                     $access_token = $this->getAccessToken();
                     $userinfo = $this->getUserinfo($openid, $access_token);
                     $code = rand(10000000,99999999);
-                    $result = $wpdb->query("insert into $ews_table (scene_id,openid,unionid,access_token,nickname,avatar,create_time,update_time) values('".$code."','".$openid."','".$userinfo['unionid']."','".$access_token."','".$userinfo['nickname']."','".$userinfo['headimgurl']."','".date("Y-m-d H:i:s")."','".date("Y-m-d H:i:s")."')");
+                    $result = $wpdb->query("insert into $ews_table (scene_id,openid,unionid,access_token,nickname,avatar,create_time,update_time) values('".$code."','".$openid."','".$userinfo['unionid']."','".$access_token."','".ews_filter_nickname($userinfo['nickname'])."','".$userinfo['headimgurl']."','".date("Y-m-d H:i:s")."','".date("Y-m-d H:i:s")."')");
                 }
 
                 if($result){
