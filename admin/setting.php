@@ -104,7 +104,8 @@ wp_enqueue_media ();
             <tr>
                 <th valign="top">使用方法</th>
                 <td>
-                    新建页面，输入短代码[erphp_weixin_scan]即可。如需深度集成到主题自带的登录里，可联系我们二次开发。
+                    新建页面，输入短代码[erphp_weixin_scan]即可。如需深度集成到主题自带的登录里，可联系我们二次开发。<br>
+                    目前，<a href="https://www.mobantu.com/7191.html" target="_blank">Modown</a>、<a href="https://www.mobantu.com/7811.html" target="_blank">Monster8</a>主题已深度集成此插件。
                 </td>
             </tr>
         </table>
