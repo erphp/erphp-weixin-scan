@@ -292,3 +292,13 @@ function ews_http_post($url, $data) {
     curl_close($ch);  
     return $res;  
 }
+
+function ews_filter_nickname($nickname){
+    $nickname = preg_replace('/[\x{1F600}-\x{1F64F}]/u', '', $nickname);
+    $nickname = preg_replace('/[\x{1F300}-\x{1F5FF}]/u', '', $nickname);
+    $nickname = preg_replace('/[\x{1F680}-\x{1F6FF}]/u', '', $nickname);
+    $nickname = preg_replace('/[\x{2600}-\x{26FF}]/u', '', $nickname);
+    $nickname = preg_replace('/[\x{2700}-\x{27BF}]/u', '', $nickname);
+    $nickname = str_replace(array('"','\''), '', $nickname);
+    return addslashes(trim($nickname));
+}
