@@ -90,7 +90,7 @@ wp_enqueue_media ();
                     <?php if($ews_reply_auto){ $cnt = count($ews_reply_auto['key']); if($cnt){?>
                     <div class="replys">
                         <?php for($i=0; $i<$cnt;$i++){?>
-                        <p><input type="text" name="ews_reply_auto[key][]" value="<?php echo $ews_reply_auto['key'][$i]?>" class="regular-text" style="width:150px;" placeholder="关键字"/> ➸ <input type="text" name="ews_reply_auto[value][]" value="<?php echo $ews_reply_auto['value'][$i]?>" class="regular-text" placeholder="回复内容"/> <a href="javascript:;" class="del-price">删除</a></p>
+                        <p><input type="text" name="ews_reply_auto[key][]" value="<?php echo $ews_reply_auto['key'][$i]?>" class="regular-text" style="width:150px;" placeholder="关键字"/> ➸ <input type="text" name="ews_reply_auto[value][]" value="<?php echo $ews_reply_auto['value'][$i]?>" class="regular-text" placeholder="回复内容"/> <a href="javascript:;" class="del-reply">删除</a></p>
                         <?php }?>
                     </div>
                     <?php }}else{?>
