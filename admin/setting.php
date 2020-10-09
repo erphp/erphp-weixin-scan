@@ -10,7 +10,7 @@ if(isset($_POST['erphp_weixin_scan'])){
     echo'<div class="updated settings-error"><p>更新成功！</p></div>';
 }
 if(isset($_POST['erphp_weixin_scan_menu'])){
-    update_option('ews_menu', str_replace('\"', '"', get_option("ews_menu")));
+    update_option('ews_menu', str_replace('\"', '"', $_POST['ews_menu']));
     global $ews_weixin_appid, $ews_weixin_appsecret;
     $TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$ews_weixin_appid."&secret=".$ews_weixin_appsecret;
     $json=file_get_contents($TOKEN_URL);
