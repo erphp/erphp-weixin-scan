@@ -300,5 +300,10 @@ function ews_filter_nickname($nickname){
     $nickname = preg_replace('/[\x{2600}-\x{26FF}]/u', '', $nickname);
     $nickname = preg_replace('/[\x{2700}-\x{27BF}]/u', '', $nickname);
     $nickname = str_replace(array('"','\''), '', $nickname);
+    $nickname = preg_replace_callback( '/./u',
+      function (array $match) {
+        return strlen($match[0]) >= 4 ? '' : $match[0];
+      },
+      $nickname);
     return addslashes(trim($nickname));
 }
