@@ -27,7 +27,7 @@ class erphpWeixinScan {
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         //$scene_id = str_replace("qrscene_", "", $postObj->EventKey);
 
-        $openid = esc_sql($postObj->FromUserName);
+        $openid = $wpdb->escape($postObj->FromUserName);
         $ToUserName = $postObj->ToUserName;
         
         $msgType = $postObj->MsgType;
