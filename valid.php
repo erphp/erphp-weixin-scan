@@ -10,6 +10,7 @@ class erphpWeixinScan {
         $echoStr = $_GET["echostr"];
         if ($echoStr) {
             if ($this->checkSignature()) {
+                ob_clean();
                 echo $echoStr;
             }
         } else {
