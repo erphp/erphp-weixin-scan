@@ -64,7 +64,7 @@ function ews_login($code){
                         $user_login = $user->user_login;
                         wp_set_auth_cookie($user_ID,true,is_ssl());
                         wp_signon( array(), is_ssl() );
-                        do_action('wp_login', $user_login);
+                        do_action('wp_login', $user_login, $user);
                         return true;
                     }else{
                         $login_name = "u".mt_rand(1000,9999).mt_rand(1000,9999).mt_rand(1000,9999).mt_rand(1000,9999);
@@ -83,7 +83,8 @@ function ews_login($code){
                                 }
                                 wp_set_auth_cookie($user_ID,true,is_ssl());
                                 wp_signon( array(), is_ssl() );
-                                do_action('wp_login', $login_name);
+                                $user2 = get_user_by('id',$user_ID);
+                                do_action('wp_login', $login_name, $user2);
                                 return true;
                             }
                         }
@@ -105,7 +106,8 @@ function ews_login($code){
                             }
                             wp_set_auth_cookie($user_ID,true,is_ssl());
                             wp_signon( array(), is_ssl() );
-                            do_action('wp_login', $login_name);
+                            $user2 = get_user_by('id',$user_ID);
+                            do_action('wp_login', $login_name, $user2);
                             return true;
                         }
                     }
